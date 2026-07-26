@@ -56,7 +56,8 @@ public class RenderDatabaseUrlEnvironmentPostProcessor implements EnvironmentPos
     private ParsedDatabaseUrl parseDatabaseUrl(String rawUrl) {
         URI uri = URI.create(rawUrl);
         String[] userInfo = uri.getUserInfo() != null ? uri.getUserInfo().split(":", 2) : new String[0];
-        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
+        int port = uri.getPort() != -1 ? uri.getPort() : 5432;
+        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + port + uri.getPath();
         if (uri.getQuery() != null) {
             jdbcUrl += "?" + uri.getQuery();
         }
