@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: logitrackpro-postgres
+    environment:
+      POSTGRES_DB: logitrackpro
+      POSTGRES_USER: logitrackpro
+      POSTGRES_PASSWORD: logitrackpro
+    ports:
+      - "5433:5432"
+    volumes:
+      - logitrackpro-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U logitrackpro -d logitrackpro"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: ./backend
+    container_name: logitrackpro-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: logitrackpro
+      DB_USER: logitrackpro
+      DB_PASSWORD: logitrackpro
+      PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  logitrackpro-postgres-data:
