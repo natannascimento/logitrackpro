@@ -7,8 +7,10 @@ MVP de gestão de frota — backend Spring Boot + frontend Angular consumindo RE
 O `docker-compose.yml` já sobe Postgres + backend com os valores de desenvolvimento embutidos (mesmos defaults documentados em `backend/.env.example`), então **não é necessário criar nenhum arquivo `.env` para rodar local**:
 
 ```bash
-docker-compose up
+docker compose up
 ```
+
+(Use `docker compose` com espaço — o plugin v2 do Docker Compose. O binário antigo `docker-compose` com hífen, v1, pode não estar instalado por padrão.)
 
 Isso builda a imagem do backend, sobe o Postgres, aplica as migrations Flyway e expõe a API em `http://localhost:8080`.
 
@@ -28,6 +30,8 @@ A aplicação abre em `http://localhost:4200` e já aponta para `http://localhos
 - O frontend não usa `.env` — ver a seção "Configuração de ambiente" em [`frontend/README.md`](frontend/README.md).
 - Nenhum arquivo `.env` real deve ser commitado; o `.gitignore` da raiz já cobre `.env`, `.env.local` e variantes, mantendo apenas os arquivos `*.env.example` versionados.
 
-### Produção (Render / Vercel)
+### Produção (Render / Vercel / Neon)
 
-Em produção, os valores reais (`DATABASE_URL`, `PORT`, `CORS_ALLOWED_ORIGINS` no backend; nenhum no frontend) são configurados como variáveis de ambiente/secrets nativos de cada plataforma — nunca via arquivo `.env` no repositório.
+Em produção, os valores reais (`DATABASE_URL`, `DATABASE_URL_DIRECT`, `PORT`, `CORS_ALLOWED_ORIGINS` no backend; nenhum no frontend) são configurados como variáveis de ambiente/secrets nativos de cada plataforma — nunca via arquivo `.env` no repositório.
+
+O banco de produção é um projeto Neon (Postgres serverless), que expõe dois endpoints: um pooled (via PgBouncer) e um direto. `DATABASE_URL` deve apontar para o endpoint pooled — usado pela aplicação em runtime — e `DATABASE_URL_DIRECT` para o endpoint direto, usado exclusivamente pelo Flyway ao aplicar migrations (o PgBouncer em modo transaction não é compatível com o Flyway).

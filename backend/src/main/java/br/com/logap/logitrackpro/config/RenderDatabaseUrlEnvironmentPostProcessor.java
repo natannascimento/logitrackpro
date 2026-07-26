@@ -19,25 +19,54 @@ public class RenderDatabaseUrlEnvironmentPostProcessor implements EnvironmentPos
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        String databaseUrl = environment.getProperty("DATABASE_URL");
-        if (databaseUrl == null || databaseUrl.startsWith("jdbc:")) {
-            return;
-        }
-
-        URI uri = URI.create(databaseUrl);
-        String[] userInfo = uri.getUserInfo() != null ? uri.getUserInfo().split(":", 2) : new String[0];
-        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
-
         Map<String, Object> converted = new HashMap<>();
-        converted.put("spring.datasource.url", jdbcUrl);
-        if (userInfo.length > 0) {
-            converted.put("spring.datasource.username", userInfo[0]);
+
+        String databaseUrl = environment.getProperty("DATABASE_URL");
+        if (databaseUrl != null && !databaseUrl.startsWith("jdbc:")) {
+            ParsedDatabaseUrl parsed = parseDatabaseUrl(databaseUrl);
+            converted.put("spring.datasource.url", parsed.jdbcUrl());
+            if (parsed.username() != null) {
+                converted.put("spring.datasource.username", parsed.username());
+            }
+            if (parsed.password() != null) {
+                converted.put("spring.datasource.password", parsed.password());
+            }
         }
-        if (userInfo.length > 1) {
-            converted.put("spring.datasource.password", userInfo[1]);
+
+        String directDatabaseUrl = environment.getProperty("DATABASE_URL_DIRECT");
+        if (directDatabaseUrl != null && !directDatabaseUrl.startsWith("jdbc:")) {
+            ParsedDatabaseUrl parsed = parseDatabaseUrl(directDatabaseUrl);
+            converted.put("spring.flyway.url", parsed.jdbcUrl());
+            if (parsed.username() != null) {
+                converted.put("spring.flyway.user", parsed.username());
+            }
+            if (parsed.password() != null) {
+                converted.put("spring.flyway.password", parsed.password());
+            }
+        }
+
+        if (converted.isEmpty()) {
+            return;
         }
 
         environment.getPropertySources()
                 .addFirst(new MapPropertySource("renderDatabaseUrl", converted));
+    }
+
+    private ParsedDatabaseUrl parseDatabaseUrl(String rawUrl) {
+        URI uri = URI.create(rawUrl);
+        String[] userInfo = uri.getUserInfo() != null ? uri.getUserInfo().split(":", 2) : new String[0];
+        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
+        if (uri.getQuery() != null) {
+            jdbcUrl += "?" + uri.getQuery();
+        }
+
+        String username = userInfo.length > 0 ? userInfo[0] : null;
+        String password = userInfo.length > 1 ? userInfo[1] : null;
+
+        return new ParsedDatabaseUrl(jdbcUrl, username, password);
+    }
+
+    private record ParsedDatabaseUrl(String jdbcUrl, String username, String password) {
     }
 }
