@@ -2,6 +2,15 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.8.
 
+## Configuração de ambiente
+
+Este projeto **não usa arquivo `.env`** em build time. A configuração de ambiente (URL da API) é feita via os arquivos nativos do Angular em `src/environments/`:
+
+- `environment.ts` — usado em desenvolvimento (`ng serve`), aponta para `http://localhost:8080/api`.
+- `environment.prod.ts` — usado no build de produção (`ng build`), aponta para a URL do backend implantado no Render.
+
+Não há nenhum segredo real nesses arquivos — a URL da API é informação pública (fica exposta no bundle de qualquer forma), por isso ambos são versionados normalmente. Se um novo valor de ambiente sensível surgir no futuro, reavalie a necessidade de um mecanismo de `.env` de build (ex: `@ngx-env/builder`) nesse momento.
+
 ## Development server
 
 To start a local development server, run:

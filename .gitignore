@@ -35,9 +35,16 @@ build/
 ### LogiTrack Pro - spec-driven process (não versionado no repositório público) ###
 .claude/
 openspec/
+proposal-*.md
+ANALISE_PROJETO.txt
 
 ### Ambiente ###
 .env
+.env.local
+.env.*.local
+.env.production
+!.env.example
+!*/.env.example
 
 ### Material do desafio (não é código-fonte da entrega) ###
 Desafio LogAp TRE - Descrição.pdf
