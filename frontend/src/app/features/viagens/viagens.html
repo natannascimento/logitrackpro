@@ -1,0 +1,52 @@
+<div class="flex justify-end p-2">
+  <button mat-flat-button (click)="novaViagem()">Nova viagem</button>
+</div>
+
+<div class="overflow-x-auto">
+<table mat-table [dataSource]="viagens()" class="w-full">
+  <ng-container matColumnDef="veiculo">
+    <th mat-header-cell *matHeaderCellDef>Veículo</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.veiculo.placa }} — {{ viagem.veiculo.modelo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="origem">
+    <th mat-header-cell *matHeaderCellDef>Origem</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.origem }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="destino">
+    <th mat-header-cell *matHeaderCellDef>Destino</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.destino }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="dataSaida">
+    <th mat-header-cell *matHeaderCellDef>Data de saída</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.dataSaida | date: 'dd/MM/yyyy HH:mm' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="dataChegada">
+    <th mat-header-cell *matHeaderCellDef>Data de chegada</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.dataChegada | date: 'dd/MM/yyyy HH:mm' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="kmPercorrida">
+    <th mat-header-cell *matHeaderCellDef>Km percorrida</th>
+    <td mat-cell *matCellDef="let viagem">{{ viagem.kmPercorrida }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="acoes">
+    <th mat-header-cell *matHeaderCellDef>Ações</th>
+    <td mat-cell *matCellDef="let viagem">
+      <button mat-icon-button aria-label="Editar viagem" (click)="editar(viagem)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Excluir viagem" (click)="excluir(viagem)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+  <tr mat-row *matRowDef="let row; columns: colunas"></tr>
+</table>
+</div>

@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Excluir viagem</h2>
+
+<mat-dialog-content>
+  Tem certeza que deseja excluir a viagem de <strong>{{ data.viagem.origem }}</strong> para
+  <strong>{{ data.viagem.destino }}</strong>? Esta ação não pode ser desfeita.
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="warn" type="button" (click)="confirmar()">Excluir</button>
+</mat-dialog-actions>
