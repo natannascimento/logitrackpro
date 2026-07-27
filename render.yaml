@@ -15,4 +15,4 @@ services:
       - key: PORT
         value: 8080
       - key: CORS_ALLOWED_ORIGINS
-        value: https://logitrackpro.vercel.app
+        value: https://logitrackpro-henna.vercel.app
