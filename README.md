@@ -2,6 +2,35 @@
 
 MVP de gestão de frota — backend Spring Boot + frontend Angular consumindo REST API, banco Postgres (Neon em produção), deploy do backend no Render e do frontend no Vercel.
 
+## Decisões técnicas e arquitetura
+
+### Backend em camadas
+
+O backend segue uma separação clássica em camadas: `controller -> service (interface + impl) -> repository -> entity`. Os controllers não conhecem entities diretamente — trocam DTOs de request/response, desacoplados das entities JPA, o que evita expor detalhes de persistência na API e permite evoluir o modelo de dados sem quebrar o contrato HTTP. Erros de validação e de recurso não encontrado são tratados de forma centralizada por um `GlobalExceptionHandler`, que padroniza as respostas 400/404 em vez de deixar cada controller implementar seu próprio tratamento de exceção.
+
+### Frontend: `core/shared/features`
+
+O frontend é organizado em três pastas com responsabilidades distintas: `core/` concentra interceptors globais (ex.: tratamento de erro HTTP), `shared/` reúne components e models reutilizáveis entre módulos, e `features/` tem uma pasta por módulo de negócio (`dashboard/`, `viagens/`), mantendo cada área da aplicação isolada das demais. Os componentes são standalone (sem `NgModule`), como recomendado pelas versões recentes do Angular. A UI usa Angular Material com o tema padrão — sem customização visual — e Tailwind CSS apenas como utilitário de layout e espaçamento por cima do Material, nunca sobrescrevendo estilos internos dos componentes Material.
+
+### Por que Viagens é o módulo de CRUD
+
+Entre as entidades do domínio, **Viagens** foi escolhido como o módulo de CRUD completo (criar, listar, editar, excluir). **Manutenção** é somente leitura: não tem tela nem endpoint de criação/edição, e existe apenas para alimentar as métricas do dashboard. Essa divisão evita duplicar esforço de CRUD em duas entidades quando o desafio pede um módulo completo — Viagens foi o escolhido por ser a entidade mais central ao domínio de gestão de frota.
+
+### Métricas do dashboard via SQL nativo
+
+As 5 métricas do dashboard são implementadas com `@Query nativeQuery` (ou `JdbcTemplate`), executando a agregação diretamente no Postgres, em vez de carregar entidades para a JVM e agregar em memória Java. Isso evita trazer para a aplicação mais dados do que o necessário só para calcular uma soma, média ou contagem, e aproveita o próprio banco — que já é otimizado para esse tipo de operação — em vez de reimplementar agregação em código.
+
+### Stack de deploy: Render, Vercel e Neon
+
+O backend é implantado no **Render** via Docker, o que evita depender de um buildpack específico de Java e mantém o ambiente de execução idêntico ao usado localmente via `docker-compose`. O frontend é publicado no **Vercel** como build estático do Angular, aproveitando deploy automático a cada push e preview deployments por PR. O banco é um projeto **Neon** (Postgres serverless), escolhido pelo tier gratuito com endpoint pooled pronto para uso em produção — a aplicação usa o endpoint pooled (`DATABASE_URL`) em runtime e o endpoint direto (`DATABASE_URL_DIRECT`) exclusivamente para as migrations do Flyway, que não é compatível com o modo transaction do PgBouncer usado no pooling. Mais detalhes de configuração de ambiente estão na seção "Produção (Render / Vercel / Neon)" abaixo.
+
+### Alterações no banco de dados
+
+O banco de dados fornecido pelo desafio foi estendido. O script vigente não é um dump único, e sim o conjunto de migrations Flyway em [`backend/src/main/resources/db/migration/`](backend/src/main/resources/db/migration/), aplicadas automaticamente na subida da aplicação:
+
+- **`V1__carga_inicial.sql`**: cria as tabelas `veiculos`, `viagens` e `manutencoes`, além da carga inicial de dados (seed) usada para popular o dashboard. Inclui a coluna `tipo` (`LEVE`/`PESADO`) em `veiculos` — necessária para a métrica "Volume por Categoria" do dashboard, que agrupa viagens pelo tipo do veículo.
+- **`V2__viagens_constraints_e_auditoria.sql`**: adiciona colunas de auditoria `created_at`/`updated_at` em `viagens`, as constraints `CHECK (km_percorrida > 0)` e `CHECK (data_chegada >= data_saida)` para garantir integridade dos dados de viagem, e índices em `veiculo_id` (em `viagens` e `manutencoes`) para otimizar as consultas do dashboard.
+
 ## Setup local
 
 O `docker-compose.yml` já sobe Postgres + backend com os valores de desenvolvimento embutidos (mesmos defaults documentados em `backend/.env.example`), então **não é necessário criar nenhum arquivo `.env` para rodar local**:
