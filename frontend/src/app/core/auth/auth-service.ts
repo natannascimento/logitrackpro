@@ -22,7 +22,14 @@ export class AuthService {
     this.token.set(response.accessToken);
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
+    try {
+      await firstValueFrom(this.http.post<void>(`${this.apiUrl}/logout`, null));
+    } catch {
+      // Falha ao revogar no backend (rede indisponível, token já expirado)
+      // não deve impedir o usuário de sair localmente.
+    }
+
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     this.token.set(null);
   }

@@ -19,9 +19,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: unknown) => {
       if (error instanceof HttpErrorResponse) {
         const isLoginRequest = req.url.endsWith('/auth/login');
+        // /auth/logout já trata sua própria falha internamente (AuthService.logout
+        // ignora erro e limpa a sessão local de qualquer forma); reagir ao 401 dela
+        // aqui chamaria logout() de novo, repetindo a mesma requisição sem necessidade.
+        const isLogoutRequest = req.url.endsWith('/auth/logout');
 
-        if (error.status === 401 && !isLoginRequest) {
+        if (error.status === 401 && !isLoginRequest && !isLogoutRequest) {
           // 401 em endpoint protegido indica sessão expirada/token inválido.
+          // Fire-and-forget: só precisamos redirecionar, a revogação no backend
+          // (que pode falhar, ex.: token já expirado) não deve atrasar isso.
           authService.logout();
           router.navigateByUrl('/login');
         } else if (error.status !== 400 && !isLoginRequest) {

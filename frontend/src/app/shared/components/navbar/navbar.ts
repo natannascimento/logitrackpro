@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { AuthService } from '../../../core/auth/auth-service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,4 +9,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
-export class Navbar {}
+export class Navbar {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  async sair(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigateByUrl('/login');
+  }
+}
