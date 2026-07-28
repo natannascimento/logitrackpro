@@ -2,6 +2,7 @@ package br.com.logap.logitrackpro.security;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -29,6 +30,7 @@ public class JwtService {
         Date agora = new Date();
         Date expiracao = new Date(agora.getTime() + expiracaoMs);
         return Jwts.builder()
+                .id(UUID.randomUUID().toString())
                 .subject(email)
                 .issuedAt(agora)
                 .expiration(expiracao)
@@ -38,6 +40,14 @@ public class JwtService {
 
     public String extrairEmail(String token) {
         return parseClaims(token).getSubject();
+    }
+
+    public String extrairJti(String token) {
+        return parseClaims(token).getId();
+    }
+
+    public Date extrairExpiracao(String token) {
+        return parseClaims(token).getExpiration();
     }
 
     public boolean tokenValido(String token) {
