@@ -62,9 +62,11 @@ A aplicação abre em `http://localhost:4200` e já aponta para `http://localhos
 
 ### Produção (Render / Vercel / Neon)
 
-Em produção, os valores reais (`DATABASE_URL`, `DATABASE_URL_DIRECT`, `PORT`, `CORS_ALLOWED_ORIGINS` no backend; nenhum no frontend) são configurados como variáveis de ambiente/secrets nativos de cada plataforma — nunca via arquivo `.env` no repositório.
+Em produção, os valores reais (`DATABASE_URL`, `DATABASE_URL_DIRECT`, `PORT`, `CORS_ALLOWED_ORIGINS`, `JWT_SECRET`, `JWT_EXPIRATION_MS` no backend; nenhum no frontend) são configurados como variáveis de ambiente/secrets nativos de cada plataforma — nunca via arquivo `.env` no repositório.
 
 O banco de produção é um projeto Neon (Postgres serverless), que expõe dois endpoints: um pooled (via PgBouncer) e um direto. `DATABASE_URL` deve apontar para o endpoint pooled — usado pela aplicação em runtime — e `DATABASE_URL_DIRECT` para o endpoint direto, usado exclusivamente pelo Flyway ao aplicar migrations (o PgBouncer em modo transaction não é compatível com o Flyway).
+
+`JWT_SECRET` e `JWT_EXPIRATION_MS` (autenticação JWT, ver `openspec/changes/auth-jwt-backend/`) devem ser configurados no Render antes do primeiro deploy que incluir essa mudança — sem eles, a aplicação falha ao subir tanto em dev quanto em prod. Gere um secret forte (ex.: `openssl rand -base64 64`) e nunca reutilize o valor de exemplo do `.env.example`.
 
 ## CI/CD
 
