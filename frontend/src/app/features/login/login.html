@@ -55,7 +55,14 @@
         />
       </div>
 
-      <button type="submit" class="login__botao" [disabled]="entrando">Entrar</button>
+      <button type="submit" class="login__botao" [disabled]="entrando">
+        @if (entrando) {
+          <span class="login__spinner" aria-hidden="true"></span>
+          Entrando…
+        } @else {
+          Entrar
+        }
+      </button>
       <button type="button" class="login__esqueci">Esqueci minha senha</button>
     </form>
   </div>
