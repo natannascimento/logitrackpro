@@ -30,6 +30,7 @@ O banco de dados fornecido pelo desafio foi estendido. O script vigente não é 
 
 - **`V1__carga_inicial.sql`**: cria as tabelas `veiculos`, `viagens` e `manutencoes`, além da carga inicial de dados (seed) usada para popular o dashboard. Inclui a coluna `tipo` (`LEVE`/`PESADO`) em `veiculos` — necessária para a métrica "Volume por Categoria" do dashboard, que agrupa viagens pelo tipo do veículo.
 - **`V2__viagens_constraints_e_auditoria.sql`**: adiciona colunas de auditoria `created_at`/`updated_at` em `viagens`, as constraints `CHECK (km_percorrida > 0)` e `CHECK (data_chegada >= data_saida)` para garantir integridade dos dados de viagem, e índices em `veiculo_id` (em `viagens` e `manutencoes`) para otimizar as consultas do dashboard.
+- **`V3__seed_manutencoes_mes_corrente.sql`**: insere uma manutenção adicional com `data_inicio` calculada a partir de `CURRENT_DATE` (em vez de data fixa), garantindo que a métrica "Projeção Financeira" do dashboard sempre tenha dado no mês corrente em qualquer ambiente recém-provisionado — as manutenções de `V1` usam datas fixas de 2024 e nunca coincidem com o mês atual.
 
 ## Setup local
 
