@@ -1,0 +1,46 @@
+<section class="login">
+  <div class="login__card">
+    <div class="login__brand">
+      <div class="login__brand-top">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#2955FF" />
+          <path
+            d="M7 20L13 12L18 17L25 8"
+            stroke="#fff"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="25" cy="8" r="2.4" fill="#fff" />
+        </svg>
+        <span class="font-display login__brand-wordmark">LogiTrack Pro</span>
+      </div>
+      <div>
+        <p class="font-display login__brand-headline">
+          Visibilidade total da sua frota, em um único painel.
+        </p>
+        <p class="login__brand-subline">Viagens, manutenções e custos — sem planilhas soltas.</p>
+      </div>
+    </div>
+
+    <form class="login__form" (ngSubmit)="entrar()">
+      <div>
+        <h2 class="font-display login__titulo">Entrar</h2>
+        <p class="login__subtitulo">Acesse o painel de gestão da frota</p>
+      </div>
+
+      <div class="login__campo">
+        <label for="login-email">E-mail</label>
+        <input id="login-email" type="email" placeholder="voce@logap.com.br" autocomplete="email" />
+      </div>
+
+      <div class="login__campo">
+        <label for="login-senha">Senha</label>
+        <input id="login-senha" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+
+      <button type="submit" class="login__botao">Entrar</button>
+      <button type="button" class="login__esqueci">Esqueci minha senha</button>
+    </form>
+  </div>
+</section>

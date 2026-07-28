@@ -1,7 +1,21 @@
-.titulo {
-  font: var(--mat-sys-body-small);
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  padding: 16px 18px;
 }
 
-.valor {
-  font: var(--mat-sys-headline-small);
+.kpi-card__titulo {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.kpi-card__valor {
+  font-weight: 600;
+  font-size: 22px;
+  margin-top: 6px;
+  color: var(--color-ink);
 }

@@ -1,7 +1,74 @@
-.active-link {
-  text-decoration: underline;
+.sidebar {
+  width: 228px;
+  flex-shrink: 0;
+  background: var(--color-ink);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 14px;
+  gap: 26px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 
-.marca {
-  font: var(--mat-sys-title-medium);
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+}
+
+.sidebar__wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.sidebar__wordmark-main {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+
+.sidebar__wordmark-sub {
+  font-weight: 500;
+  font-size: 11px;
+  color: #7c8af0;
+  letter-spacing: 1.5px;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+  color: #b7becc;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+}
+
+.sidebar__link--active {
+  background: var(--color-primary);
+  color: #fff;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
 }

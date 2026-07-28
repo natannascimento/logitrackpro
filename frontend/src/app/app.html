@@ -1,4 +1,16 @@
-<app-navbar />
-<main class="p-4">
+@if (showShell()) {
+  <div class="app-shell">
+    <app-navbar />
+    <main class="app-shell__main">
+      <app-route-progress-bar />
+      @if (loading()) {
+        <app-route-skeleton />
+      }
+      <div class="app-shell__content" [class.app-shell__content--hidden]="loading()">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+} @else {
   <router-outlet />
-</main>
+}

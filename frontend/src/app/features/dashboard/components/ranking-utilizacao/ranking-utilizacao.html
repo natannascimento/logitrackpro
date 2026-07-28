@@ -1,9 +1,9 @@
-<mat-card class="flex flex-col gap-1 p-2">
-  <span class="titulo">Ranking de utilização</span>
+<div class="kpi-card">
+  <span class="kpi-card__titulo">Ranking de utilização</span>
   @if (ranking(); as veiculo) {
-    <span class="destaque">{{ veiculo.placa }} — {{ veiculo.modelo }}</span>
-    <span>{{ veiculo.totalKm }} km percorridos</span>
+    <span class="kpi-card__valor font-tabular">{{ veiculo.placa }}</span>
+    <span class="ranking-utilizacao__detalhe">{{ veiculo.modelo }} · {{ veiculo.totalKm }} km</span>
   } @else {
-    <span>Nenhuma viagem registrada ainda.</span>
+    <span class="ranking-utilizacao__detalhe">Nenhuma viagem registrada ainda.</span>
   }
-</mat-card>
+</div>

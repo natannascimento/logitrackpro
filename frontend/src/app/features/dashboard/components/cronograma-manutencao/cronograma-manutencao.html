@@ -1,31 +1,46 @@
-<div class="overflow-x-auto">
-  <table mat-table [dataSource]="manutencoes()" class="w-full">
-    <ng-container matColumnDef="veiculo">
-      <th mat-header-cell *matHeaderCellDef>Veículo</th>
-      <td mat-cell *matCellDef="let manutencao">{{ manutencao.veiculo.placa }} — {{ manutencao.veiculo.modelo }}</td>
-    </ng-container>
+<div class="panel">
+  <span class="panel__titulo">Cronograma de manutenção</span>
+  <div class="overflow-x-auto">
+    <table mat-table [dataSource]="manutencoes()" class="w-full">
+      <ng-container matColumnDef="veiculo">
+        <th mat-header-cell *matHeaderCellDef>Veículo</th>
+        <td mat-cell *matCellDef="let manutencao">
+          <span class="font-tabular">{{ manutencao.veiculo.placa }}</span>
+          — {{ manutencao.veiculo.modelo }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="tipoServico">
-      <th mat-header-cell *matHeaderCellDef>Tipo de serviço</th>
-      <td mat-cell *matCellDef="let manutencao">{{ manutencao.tipoServico }}</td>
-    </ng-container>
+      <ng-container matColumnDef="tipoServico">
+        <th mat-header-cell *matHeaderCellDef>Tipo de serviço</th>
+        <td mat-cell *matCellDef="let manutencao">{{ manutencao.tipoServico }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="dataInicio">
-      <th mat-header-cell *matHeaderCellDef>Data de início</th>
-      <td mat-cell *matCellDef="let manutencao">{{ manutencao.dataInicio | date: 'dd/MM/yyyy' }}</td>
-    </ng-container>
+      <ng-container matColumnDef="dataInicio">
+        <th mat-header-cell *matHeaderCellDef>Data de início</th>
+        <td mat-cell *matCellDef="let manutencao">{{ manutencao.dataInicio | date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="custoEstimado">
-      <th mat-header-cell *matHeaderCellDef>Custo estimado</th>
-      <td mat-cell *matCellDef="let manutencao">{{ manutencao.custoEstimado | currency: 'BRL' }}</td>
-    </ng-container>
+      <ng-container matColumnDef="custoEstimado">
+        <th mat-header-cell *matHeaderCellDef>Custo estimado</th>
+        <td mat-cell *matCellDef="let manutencao">{{ manutencao.custoEstimado | currency: 'BRL' }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let manutencao">{{ manutencao.status }}</td>
-    </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let manutencao">
+          <span
+            class="chip"
+            [class.chip--amber]="manutencao.status === 'PENDENTE'"
+            [class.chip--primary]="manutencao.status === 'EM_REALIZACAO'"
+            [class.chip--mint]="manutencao.status === 'CONCLUIDA'"
+          >
+            {{ manutencao.status }}
+          </span>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="colunas"></tr>
-    <tr mat-row *matRowDef="let row; columns: colunas"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let row; columns: colunas"></tr>
+    </table>
+  </div>
 </div>

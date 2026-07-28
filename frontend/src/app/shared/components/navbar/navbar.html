@@ -1,6 +1,40 @@
-<mat-toolbar color="primary" class="flex gap-2">
-  <span class="marca">LogiTrack Pro</span>
-  <span class="flex-1"></span>
-  <a mat-button routerLink="/viagens" routerLinkActive="active-link">Viagens</a>
-  <a mat-button routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
-</mat-toolbar>
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect width="32" height="32" rx="9" fill="#2955FF" />
+      <path
+        d="M7 20L13 12L18 17L25 8"
+        stroke="#fff"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <circle cx="25" cy="8" r="2.4" fill="#fff" />
+    </svg>
+    <div class="sidebar__wordmark">
+      <span class="font-display sidebar__wordmark-main">LogiTrack</span>
+      <span class="font-display sidebar__wordmark-sub">PRO</span>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav">
+    <a routerLink="/viagens" routerLinkActive="sidebar__link--active" class="sidebar__link">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M4 17V8a2 2 0 0 1 2-2h6v11" />
+        <path d="M12 10h4l3 3v4h-7" />
+        <circle cx="7.5" cy="18" r="1.8" />
+        <circle cx="17" cy="18" r="1.8" />
+      </svg>
+      Viagens
+    </a>
+    <a routerLink="/dashboard" routerLinkActive="sidebar__link--active" class="sidebar__link">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.2" />
+        <rect x="13" y="3.5" width="7.5" height="4.5" rx="1.2" />
+        <rect x="13" y="10.5" width="7.5" height="10" rx="1.2" />
+        <rect x="3.5" y="13.5" width="7.5" height="7" rx="1.2" />
+      </svg>
+      Dashboard
+    </a>
+  </nav>
+</aside>

@@ -1,3 +1,9 @@
 .erro-api {
   color: var(--mat-sys-error);
 }
+
+.viagem-form-dialog__linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

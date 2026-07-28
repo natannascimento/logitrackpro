@@ -1,0 +1,43 @@
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skel {
+  background: linear-gradient(90deg, #edeff2 25%, #f7f8fa 37%, #edeff2 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.route-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.route-skeleton__titulo {
+  width: 220px;
+  height: 26px;
+  border-radius: 6px;
+}
+
+.route-skeleton__cards {
+  display: flex;
+  gap: 16px;
+}
+
+.route-skeleton__card {
+  flex: 1;
+  height: 96px;
+  border-radius: 12px;
+}
+
+.route-skeleton__bloco {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+}

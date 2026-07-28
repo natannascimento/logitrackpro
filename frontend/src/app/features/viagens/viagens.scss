@@ -1,0 +1,68 @@
+.viagens {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.viagens__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viagens__titulo {
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0 0 2px;
+  color: var(--color-ink);
+}
+
+.viagens__subtitulo {
+  color: var(--color-muted);
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.viagens__modelo {
+  font-size: 11.5px;
+  color: var(--color-muted);
+}
+
+.viagens__tabela {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  overflow: hidden;
+
+  ::ng-deep .mat-mdc-header-row {
+    background: #fafafb;
+  }
+
+  ::ng-deep .mat-mdc-header-cell {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  ::ng-deep .mat-mdc-cell,
+  ::ng-deep .mat-mdc-header-cell {
+    padding: 10px 16px;
+  }
+
+  ::ng-deep .mat-mdc-row {
+    font-size: 13px;
+  }
+
+  ::ng-deep .mat-mdc-icon-button {
+    color: var(--color-muted);
+  }
+}
+
+.viagens__acao-excluir {
+  &:hover,
+  &:focus-visible {
+    color: var(--color-red);
+  }
+}

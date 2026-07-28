@@ -54,7 +54,7 @@ export class Viagens implements OnInit {
   }
 
   private abrirDialog(data?: ViagemFormDialogData): void {
-    const dialogRef = this.dialog.open(ViagemFormDialog, { data, width: 'min(480px, 95vw)' });
+    const dialogRef = this.dialog.open(ViagemFormDialog, { data, width: 'min(560px, 95vw)' });
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.viagemService.carregarViagens();
