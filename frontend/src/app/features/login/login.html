@@ -23,23 +23,39 @@
       </div>
     </div>
 
-    <form class="login__form" (ngSubmit)="entrar()">
+    <form class="login__form" [formGroup]="form" (ngSubmit)="entrar()">
       <div>
         <h2 class="font-display login__titulo">Entrar</h2>
         <p class="login__subtitulo">Acesse o painel de gestão da frota</p>
       </div>
 
+      @if (erroApi()) {
+        <p class="login__erro">{{ erroApi() }}</p>
+      }
+
       <div class="login__campo">
         <label for="login-email">E-mail</label>
-        <input id="login-email" type="email" placeholder="voce@logap.com.br" autocomplete="email" />
+        <input
+          id="login-email"
+          type="email"
+          formControlName="email"
+          placeholder="voce@logap.com.br"
+          autocomplete="email"
+        />
       </div>
 
       <div class="login__campo">
         <label for="login-senha">Senha</label>
-        <input id="login-senha" type="password" placeholder="••••••••" autocomplete="current-password" />
+        <input
+          id="login-senha"
+          type="password"
+          formControlName="senha"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
       </div>
 
-      <button type="submit" class="login__botao">Entrar</button>
+      <button type="submit" class="login__botao" [disabled]="entrando">Entrar</button>
       <button type="button" class="login__esqueci">Esqueci minha senha</button>
     </form>
   </div>
