@@ -17,5 +17,7 @@ public abstract class AbstractIntegrationTest {
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
+        registry.add("app.jwt.secret", () -> "test-secret-para-testes-de-integracao-0123456789");
+        registry.add("app.jwt.expiration-ms", () -> "3600000");
     }
 }

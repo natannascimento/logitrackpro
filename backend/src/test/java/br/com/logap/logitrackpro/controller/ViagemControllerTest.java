@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,6 +24,7 @@ import br.com.logap.logitrackpro.AbstractIntegrationTest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class ViagemControllerTest extends AbstractIntegrationTest {
 
     @Autowired
