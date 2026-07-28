@@ -1,7 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,6 +38,13 @@ function dataChegadaAposSaida(control: AbstractControl): ValidationErrors | null
   return new Date(dataChegada) >= new Date(dataSaida) ? null : { dataChegadaAntesDaSaida: true };
 }
 
+class DataChegadaErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const parent = control?.parent;
+    return !!(parent?.hasError('dataChegadaAntesDaSaida') && (control?.touched || form?.submitted));
+  }
+}
+
 @Component({
   selector: 'app-viagem-form-dialog',
   imports: [
@@ -50,6 +67,7 @@ export class ViagemFormDialog implements OnInit {
   protected readonly veiculos = this.viagemService.veiculos;
   protected salvando = false;
   protected readonly erroApi = signal<string | null>(null);
+  protected readonly matcherDataChegada = new DataChegadaErrorStateMatcher();
 
   protected readonly form = this.fb.group(
     {
